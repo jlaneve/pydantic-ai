@@ -139,8 +139,7 @@ class MCPServer(ABC):
         client = ClientSession(read_stream=self._read_stream, write_stream=self._write_stream)
         self._client = await self._exit_stack.enter_async_context(client)
 
-        async with anyio.fail_after(self._get_client_initialize_timeout()):
-            await self._client.initialize()
+        await self._client.initialize()
 
         if log_level := self._get_log_level():
             await self._client.set_logging_level(log_level)
